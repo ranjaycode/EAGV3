@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="popup.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <title>OmniPrice</title>
+</head>
+<body>
+    <div class="header">
+        <div class="logo">OmniPrice</div>
+        <div class="status" id="status-indicator">Ready</div>
+    </div>
+    <div class="main-content" id="main-content">
+        <div class="loader" id="loader">
+            <div class="spinner"></div>
+            <p>Analyzing Product...</p>
+        </div>
+        <div class="product-view" id="product-view" style="display: none;">
+            <div class="product-card">
+                <img id="product-image" src="" alt="Product" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiMzMzMiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cmVjdCB4PSIzIiB5PSIzIiB3aWR0aD0iMTgiIGhlaWdodD0iMTgiIHJ4PSIyIiByeT0iMiI+PC9yZWN0PjxjaXJjbGUgY3g9IjgiLjUiIGN5PSI4LjUiIHI9IjEuNSI+PC9jaXJjbGU+PHBvbHlsaW5lIHBvaW50cz0iMjEgMTUgMTYgMTAgNSAyMSI+PC9wb2x5bGluZT48L3N2Zz4=''">
+                <div class="product-info">
+                    <h2 id="product-title">Loading...</h2>
+                    <p class="amazon-price" id="amazon-price">--</p>
+                </div>
+            </div>
+            <div class="compare-section">
+                <h3>Compare Prices</h3>
+                <div class="store-list" id="store-list">
+                    <!-- Store items will be injected here -->
+                </div>
+            </div>
+        </div>
+        <div class="error-view" id="error-view" style="display: none;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+            <p id="error-text">Please open an Amazon product page to see prices.</p>
+        </div>
+    </div>
+    <script src="popup.js"></script>
+</body>
+</html>
