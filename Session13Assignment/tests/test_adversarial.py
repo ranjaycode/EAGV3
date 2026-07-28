@@ -19,14 +19,20 @@ async def test_adversarial_speculative_cancellation_no_result_leak():
     # Verify res_paris was cancelled deterministically by quorum
     assert graph.nodes["res_paris"].state == TaskState.CANCELLED
 
-    # Attack attempt: Simulate late arriving result for res_paris
-    graph.set_state("res_paris", TaskState.CANCELLED, result={"city": "Paris", "population": "999M"})
+    # Attack: simulate a stale asyncio Task delivering a late SUCCEEDED result after cancellation.
+    # Before the fix, this mutated res_paris from CANCELLED → SUCCEEDED and leaked
+    # Paris data into the distill node's source list.
+    graph.set_state("res_paris", TaskState.SUCCEEDED, result={"city": "Paris", "population": "999M"})
 
-    # Graph state for res_paris must remain CANCELLED, not SUCCEEDED
-    assert graph.nodes["res_paris"].state == TaskState.CANCELLED
-    # Distill node sources must only contain uncancelled succeeded nodes
+    # After fix: terminal-state guard in set_state() must reject the transition.
+    assert graph.nodes["res_paris"].state == TaskState.CANCELLED, (
+        "Security invariant violated: CANCELLED node was mutated to SUCCEEDED by late result!"
+    )
+    # Distill node sources must only contain the quorum-approved succeeded nodes.
     distill_sources = graph.nodes["distill"].spec.input_data["sources"]
-    assert "res_paris" not in distill_sources
+    assert "res_paris" not in distill_sources, (
+        "Late result from cancelled speculative node leaked into distill inputs!"
+    )
 
 
 def test_adversarial_cross_scope_memory_isolation():

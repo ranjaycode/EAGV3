@@ -13,6 +13,15 @@ class TaskState(str, Enum):
     WAITING = "waiting"
 
 
+# Terminal states are immutable: once a node reaches one, no further transition is allowed.
+# This is the core defence against late-arriving results from cancelled speculative nodes.
+_TERMINAL_STATES: frozenset = frozenset({
+    TaskState.SUCCEEDED,
+    TaskState.FAILED,
+    TaskState.CANCELLED,
+})
+
+
 @dataclass
 class TaskSpec:
     id: str
@@ -112,6 +121,12 @@ class LiveTaskGraph:
         if task_id not in self.nodes:
             return
         node = self.nodes[task_id]
+
+        # Guard: terminal states are immutable.  A cancelled/succeeded/failed node
+        # must never be overwritten by a late-arriving result from a stale async task.
+        if node.state in _TERMINAL_STATES:
+            return
+
         node.state = state
         node.updated_at = time.time()
         if result is not None:
