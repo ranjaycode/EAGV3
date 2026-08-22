@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Arcturus Studio — Autonomous Agentic Coding Workbench</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div id="app" class="app-layout">
+    <!-- Header -->
+    <header class="app-header">
+      <div class="brand-container">
+        <svg class="brand-logo" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="18" cy="18" r="14" stroke="url(#logo-grad)" stroke-width="2.5" stroke-dasharray="4 2" />
+          <polygon points="18,6 22,14 30,18 22,22 18,30 14,22 6,18 14,14" fill="url(#star-grad)" />
+          <circle cx="18" cy="18" r="3" fill="#00F2FE" />
+          <defs>
+            <linearGradient id="logo-grad" x1="0" y1="0" x2="36" y2="36">
+              <stop offset="0%" stop-color="#00F2FE"/>
+              <stop offset="100%" stop-color="#7928CA"/>
+            </linearGradient>
+            <linearGradient id="star-grad" x1="0" y1="0" x2="36" y2="36">
+              <stop offset="0%" stop-color="#00F2FE"/>
+              <stop offset="50%" stop-color="#4F46E5"/>
+              <stop offset="100%" stop-color="#7928CA"/>
+            </linearGradient>
+          </defs>
+        </svg>
+        <div class="brand-text">
+          <span class="brand-name">ARCTURUS <span class="brand-badge">S17 ENGINE</span></span>
+          <span class="brand-tagline">Autonomous Coding & TDD Workbench</span>
+        </div>
+      </div>
+
+      <div class="header-metrics">
+        <div class="metric-chip">
+          <span class="metric-label">STATUS</span>
+          <span class="status-indicator online" id="server-status"><span class="pulse-dot"></span> S17 API READY</span>
+        </div>
+        <div class="metric-chip">
+          <span class="metric-label">MODE</span>
+          <span class="metric-value" id="mode-badge">LIVE S17CODE</span>
+        </div>
+        <div class="metric-chip">
+          <span class="metric-label">TEST LIFECYCLE</span>
+          <span class="lifecycle-badge" id="lifecycle-badge">RED → GREEN</span>
+        </div>
+      </div>
+
+      <div class="header-actions">
+        <button id="mode-toggle-btn" class="btn btn-secondary btn-sm" title="Toggle between Live Server & Simulation Mode">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9"/></svg>
+          <span id="mode-toggle-text">Switch Mode</span>
+        </button>
+        <button id="theme-toggle-btn" class="btn btn-icon" title="Toggle Theme">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- Workspace Main Body -->
+    <div class="workspace-body">
+      <!-- Sidebar Control Panel -->
+      <aside class="sidebar-panel">
+        <div class="sidebar-section">
+          <h3 class="section-title">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+            PROMPT PRESETS
+          </h3>
+          <div class="preset-group">
+            <button class="preset-card active" data-preset="landing">
+              <div class="preset-title">Arcturus Landing Page</div>
+              <div class="preset-desc">Full HTML landing page, animated terminal, sticky nav, webcheck harness validation.</div>
+              <div class="preset-tags"><span class="tag">HTML/CSS</span><span class="tag">webcheck</span></div>
+            </button>
+            <button class="preset-card" data-preset="python-tdd">
+              <div class="preset-card-header">
+                <div class="preset-title">Python average() Bug Fix</div>
+              </div>
+              <div class="preset-desc">Fix ZeroDivisionError in average() with pytest judge enforcement.</div>
+              <div class="preset-tags"><span class="tag">pytest</span><span class="tag">TDD</span></div>
+            </button>
+            <button class="preset-card" data-preset="security-fix">
+              <div class="preset-title">S17Code Path Traversal Security Fix</div>
+              <div class="preset-desc">Refuse relative path traversal in guard.py and git flag bypasses.</div>
+              <div class="preset-tags"><span class="tag">Security</span><span class="tag">guard.py</span></div>
+            </button>
+          </div>
+        </div>
+
+        <div class="sidebar-section">
+          <h3 class="section-title">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+            GOAL & INSTRUCTIONS
+          </h3>
+          <textarea id="prompt-input" class="prompt-textarea" rows="5" placeholder="Enter instructions for autonomous coding agent..."></textarea>
+        </div>
+
+        <div class="sidebar-section">
+          <h3 class="section-title">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+            MARKDOWN SKILLS
+          </h3>
+          <div class="skills-selector">
+            <label class="skill-item">
+              <input type="checkbox" id="skill-web" checked>
+              <div class="skill-info">
+                <span class="skill-name">web-landing-page.md</span>
+                <span class="skill-meta">Level 2 Disclosure • file:// origin safety</span>
+              </div>
+            </label>
+            <label class="skill-item">
+              <input type="checkbox" id="skill-tdd" checked>
+              <div class="skill-info">
+                <span class="skill-name">python-tdd.md</span>
+                <span class="skill-meta">Level 2 Disclosure • Judge protection</span>
+              </div>
+            </label>
+          </div>
+        </div>
+
+        <div class="sidebar-section">
+          <h3 class="section-title">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-2 2 2 2 0 01-2-2v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 01-2-2 2 2 0 012-2h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 012-2 2 2 0 012 2v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 012 2 2 2 0 01-2 2h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
+            HARNESS BOUNDS & GUARDS
+          </h3>
+          <div class="control-row">
+            <label for="optimizer-toggle">Query Optimizer</label>
+            <input type="checkbox" id="optimizer-toggle" class="toggle-checkbox" checked>
+          </div>
+          <div class="control-row">
+            <label for="max-failures">Max Repeat Failures</label>
+            <span class="range-val" id="failures-val">4</span>
+          </div>
+          <input type="range" id="max-failures" min="1" max="10" value="4" class="range-slider">
+        </div>
+
+        <div class="sidebar-actions">
+          <button id="run-agent-btn" class="btn btn-primary btn-block">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+            LAUNCH AGENT RUN
+          </button>
+          <button id="reset-run-btn" class="btn btn-secondary btn-block">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 109-9 9.75 9.75 0 00-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+            Reset Workspace
+          </button>
+        </div>
+      </aside>
+
+      <!-- Central Content Workspace -->
+      <main class="main-panel">
+        <!-- View Navigation Tabs -->
+        <nav class="workspace-tabs">
+          <button class="tab-btn active" data-tab="dag-view">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+            Execution Graph (DAG)
+          </button>
+          <button class="tab-btn" data-tab="terminal-view">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>
+            Terminal & Execution Logs
+          </button>
+          <button class="tab-btn" data-tab="diff-view">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 3h5v5"/><path d="M8 21H3v-5"/><path d="M21 3l-7 7"/><path d="M3 21l7-7"/></svg>
+            Anchored Diffs
+          </button>
+          <button class="tab-btn" data-tab="preview-view">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+            App Preview & Webcheck
+          </button>
+        </nav>
+
+        <!-- Tab 1: Execution Graph (DAG) -->
+        <div id="dag-view" class="tab-content active">
+          <div class="dag-header">
+            <div class="dag-summary">
+              <span class="summary-item">Node Count: <strong id="node-count">0</strong></span>
+              <span class="summary-item">Current State: <strong id="current-state" class="state-idle">IDLE</strong></span>
+              <span class="summary-item">Protected Path Blocked: <strong id="blocked-count" class="text-emerald">0</strong></span>
+            </div>
+            <div class="dag-legend">
+              <span class="legend-item"><span class="legend-dot pending"></span> Pending</span>
+              <span class="legend-item"><span class="legend-dot running"></span> Active</span>
+              <span class="legend-item"><span class="legend-dot failed"></span> Test Fail (Red)</span>
+              <span class="legend-item"><span class="legend-dot passed"></span> Pass (Green)</span>
+            </div>
+          </div>
+          <div class="dag-graph-container" id="dag-graph">
+            <div class="empty-state">
+              <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+              <p>Click <strong>"LAUNCH AGENT RUN"</strong> to start the autonomous execution loop.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tab 2: Terminal & Command Output -->
+        <div id="terminal-view" class="tab-content">
+          <div class="terminal-toolbar">
+            <div class="terminal-title">ALLOWLIST COMMAND EXECUTION CONSOLE</div>
+            <div class="terminal-badges">
+              <span class="badge badge-info">No Shell</span>
+              <span class="badge badge-success">Allowlist Enforced</span>
+            </div>
+          </div>
+          <div class="terminal-window" id="terminal-output">
+            <div class="term-line sys">[SYSTEM] Arcturus Terminal initialized. Waiting for task execution...</div>
+          </div>
+        </div>
+
+        <!-- Tab 3: Anchored Code Diffs -->
+        <div id="diff-view" class="tab-content">
+          <div class="diff-header">
+            <div class="diff-file-info">
+              <span class="file-path-badge" id="diff-file-path">index.html</span>
+              <span class="diff-meta">Rule Enforced: Read-Before-Edit & Unique Anchor</span>
+            </div>
+          </div>
+          <div class="diff-editor-container">
+            <pre class="diff-content" id="diff-code-display"><code class="language-diff">
+<span class="diff-info"># Click "LAUNCH AGENT RUN" to observe anchored string replacement edits...</span>
+            </code></pre>
+          </div>
+        </div>
+
+        <!-- Tab 4: App Preview & Harness Validation -->
+        <div id="preview-view" class="tab-content">
+          <div class="preview-toolbar">
+            <div class="device-switcher">
+              <button class="device-btn active" data-res="100%">Desktop (100%)</button>
+              <button class="device-btn" data-res="768px">Tablet (768px)</button>
+              <button class="device-btn" data-res="375px">Mobile (375px)</button>
+            </div>
+            <div class="preview-actions">
+              <button id="refresh-preview-btn" class="btn btn-secondary btn-sm">Reload Preview</button>
+              <button id="run-webcheck-btn" class="btn btn-primary btn-sm">Run Webcheck Harness</button>
+            </div>
+          </div>
+
+          <div class="preview-split-container">
+            <div class="iframe-wrapper">
+              <iframe id="app-preview-iframe" title="Application Preview" src="about:blank"></iframe>
+            </div>
+            <div class="webcheck-sidebar">
+              <div class="webcheck-card">
+                <h4 class="card-title">WEBCHECK HARNESS DIAGNOSTICS</h4>
+                <div class="diagnostic-list" id="webcheck-results">
+                  <div class="diag-item status-pending">
+                    <span class="diag-icon">⏳</span>
+                    <div class="diag-details">
+                      <span class="diag-name">file:// Origin Security check</span>
+                      <span class="diag-sub">Verifies localStorage call doesn't throw</span>
+                    </div>
+                  </div>
+                  <div class="diag-item status-pending">
+                    <span class="diag-icon">⏳</span>
+                    <div class="diag-details">
+                      <span class="diag-name">Visible Characters Check</span>
+                      <span class="diag-sub">Ensures opacity > 0 and rendered DOM text</span>
+                    </div>
+                  </div>
+                  <div class="diag-item status-pending">
+                    <span class="diag-icon">⏳</span>
+                    <div class="diag-details">
+                      <span class="diag-name">No-JavaScript Fallback</span>
+                      <span class="diag-sub">Checks layout stability without JS</span>
+                    </div>
+                  </div>
+                  <div class="diag-item status-pending">
+                    <span class="diag-icon">⏳</span>
+                    <div class="diag-details">
+                      <span class="diag-name">Interactive Click Response</span>
+                      <span class="diag-sub">Verifies theme toggle alters data-theme</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script src="mock_runner.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
